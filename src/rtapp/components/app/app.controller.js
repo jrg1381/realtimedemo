@@ -29,6 +29,7 @@ export default class AppController {
     $filter,
     $mdToast,
     $scope,
+    $location,
     AppState,
     AudioCaptureEvent,
     AudioCaptureService,
@@ -47,6 +48,7 @@ export default class AppController {
     this.$filter = $filter
     this.$mdToast = $mdToast
     this.$scope = $scope
+    this.$location = $location
     this.AppState = AppState
     this.AudioCaptureEvent = AudioCaptureEvent
     this.AudioCaptureService = AudioCaptureService
@@ -114,6 +116,12 @@ export default class AppController {
       if (this.config.app.debug) {
         this.DebugTriggerService.enable()
       }
+      var altHost = this.$location.search()["endpoint"]
+      if (altHost) {
+        console.log("Using alternate host: " + altHost)
+        this.config.host = altHost
+      }
+      
     })
     this.strings = this.StringService.get()
     this.addEventListeners()
