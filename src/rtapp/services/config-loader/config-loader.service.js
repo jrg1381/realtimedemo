@@ -24,10 +24,20 @@ export default class ConfigLoaderService {
         config[key] = parseInt(config[key])
       }
     }
+    this.$window.localStorage.setItem('rt-config', JSON.stringify(config))
     deferred.resolve(this.config)
     return deferred.promise
   }
   _load () {
+    let deferred = this.$q.defer()
+
+    var storedConfig = this.$window.localStorage.getItem('rt-config')
+    if(storedConfig) {
+      this.config = JSON.parse(storedConfig)
+      deferred.resolve(this.config)
+      return deferred.promise
+    }
+
     return this.$http
       .get(`./${configFilePath}`, {
         cache: true
