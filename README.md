@@ -34,7 +34,3 @@ This demo is publically hosted here.
 5. See changes reflected in your web browser.
 
 [docker-ce]: https://www.docker.com/community-edition
-
-## Override host
-
-https://localhost:8080/#!/?endpoint=foobarbaz.dfgd:9000
