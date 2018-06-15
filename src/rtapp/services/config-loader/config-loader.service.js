@@ -9,17 +9,19 @@ export default class ConfigLoaderService {
   }
   get () {
     let deferred = this.$q.defer()
+    let storedConfig = this.$window.localStorage.getItem('rt-config')
 
-    if (this.config) {
+    if (storedConfig) {
+      let storedConfigObject = JSON.parse(storedConfig)
+      if(this.config) {
+        this.config.api = storedConfigObject.api
+        this.config.app = storedConfigObject.app
+      } else {
+        this.config = storedConfigObject
+      }
       deferred.resolve(this.config)
       return deferred.promise
     } else {
-      var storedConfig = this.$window.localStorage.getItem('rt-config')
-      if(storedConfig) {
-        this.config = JSON.parse(storedConfig)
-        deferred.resolve(this.config)
-        return deferred.promise
-      }
       return this._load()
     }
   }
