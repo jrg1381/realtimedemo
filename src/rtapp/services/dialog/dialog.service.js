@@ -175,8 +175,8 @@ export default class DialogService {
           }
         })
         .then(config => {
-          this.ConfigLoaderService.save(config)
-        })
+            this.ConfigLoaderService.save(config)
+          })
         .catch(this.handleError.bind(this))
     })
   }
