@@ -147,12 +147,12 @@ export default class AppController {
   onFeedbackClicked ($event) {
     this.showFeedbackQuestionnaire(this.transcripts)
   }
-  showAccuracyDiscalimer () {
+  showAccuracyDisclaimer () {
     this.stopTranscribing()
-    this.DialogService.showAccuracyDiscalimer()
+    this.DialogService.showAccuracyDisclaimer()
   }
   onAccuracyClicked ($event) {
-    this.showAccuracyDiscalimer()
+    this.showAccuracyDisclaimer()
   }
   handleIncomingAudioBuffer (event, data) {
     this.RealtimeAPIService.sendAudioBuffer(data.pcmData, data.sampleRate)

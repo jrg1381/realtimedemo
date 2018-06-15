@@ -117,7 +117,7 @@ export default class DialogService {
       )
       .catch(this.handleError.bind(this))
   }
-  showAccuracyDiscalimer () {
+  showAccuracyDisclaimer () {
     this.$analytics.eventTrack('Dialog', {
       label: this.StringService.get().dialog.accuracy.analytics.label
     })
