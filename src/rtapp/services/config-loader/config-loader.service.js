@@ -9,10 +9,17 @@ export default class ConfigLoaderService {
   }
   get () {
     let deferred = this.$q.defer()
+
     if (this.config) {
       deferred.resolve(this.config)
       return deferred.promise
     } else {
+      var storedConfig = this.$window.localStorage.getItem('rt-config')
+      if(storedConfig) {
+        this.config = JSON.parse(storedConfig)
+        deferred.resolve(this.config)
+        return deferred.promise
+      }
       return this._load()
     }
   }
@@ -29,15 +36,6 @@ export default class ConfigLoaderService {
     return deferred.promise
   }
   _load () {
-    let deferred = this.$q.defer()
-
-    var storedConfig = this.$window.localStorage.getItem('rt-config')
-    if(storedConfig) {
-      this.config = JSON.parse(storedConfig)
-      deferred.resolve(this.config)
-      return deferred.promise
-    }
-
     return this.$http
       .get(`./${configFilePath}`, {
         cache: true
