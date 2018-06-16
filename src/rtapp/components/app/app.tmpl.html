@@ -26,16 +26,15 @@
     <md-content class="app-content"
       layout="column"
       md-whiteframe="1">
-      <!--
       <div layout="row"
         layout-align="space-between"
         layout-fill>
         <md-button class="md-raised md-primary"
-          ng-click="$ctrl.onAccuracyClicked($event)"
-          analytics-on="click"
-          analytics-event="{{$ctrl.strings.components.app.analytics.accuracy}}">
-          {{$ctrl.strings.components.app.improveAccuracy}}
+          ng-click="$ctrl.onCustomDictionaryClicked($event)">
+          {{$ctrl.strings.components.app.customDictionary}}
         </md-button>
+      </div>
+            <!--
         <md-button class="md-raised md-accent"
           ng-click="$ctrl.onFeedbackClicked($event)"
           analytics-on="click"

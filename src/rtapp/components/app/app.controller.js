@@ -154,6 +154,9 @@ export default class AppController {
   onAccuracyClicked ($event) {
     this.showAccuracyDisclaimer()
   }
+  onCustomDictionaryClicked ($event) {
+    alert("PROTEUS!!!")
+  }
   handleIncomingAudioBuffer (event, data) {
     this.RealtimeAPIService.sendAudioBuffer(data.pcmData, data.sampleRate)
   }

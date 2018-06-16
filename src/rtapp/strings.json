@@ -40,6 +40,7 @@
   },
   "components": {
     "app": {
+      "customDictionary": "Custom dictionary",
       "title": "Real-time transcription demo",
       "improveAccuracy": "Improve Accuracy",
       "leaveFeedback": "Leave Feedback",
