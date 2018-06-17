@@ -155,7 +155,7 @@ export default class AppController {
     this.showAccuracyDisclaimer()
   }
   onCustomDictionaryClicked ($event) {
-    alert("PROTEUS!!!")
+    this.DialogService.showCustomDictionaryConfiguration()
   }
   handleIncomingAudioBuffer (event, data) {
     this.RealtimeAPIService.sendAudioBuffer(data.pcmData, data.sampleRate)

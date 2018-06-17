@@ -59,6 +59,9 @@
       },
       "languageSelectLabel": "Select the language you will be transcribing"
     },
+    "customDictionaryForm": {
+      "blurb": "Define the custom dictionary entries for this transcription session." 
+    },
     "feedbackForm": {
       "rating": {
         "label": "How would you rate today's demo?",
