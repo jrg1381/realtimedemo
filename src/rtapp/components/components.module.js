@@ -8,6 +8,7 @@ import LanguageSelectorComponent from './language-selector/language-selector.com
 import MicrophoneButtonComponent from './microphone-button/microphone-button.component'
 import TranscriptComponent from './transcript/transcript.component'
 import TranscriptComponentEvent from './transcript/transcript.event'
+import CustomDictionaryFormComponent from './custom-dictionary-form/custom-dictionary-form.component'
 
 export default angular
   .module('sm.rtapp.components', ['ngMaterial'])
@@ -16,6 +17,7 @@ export default angular
   .component('microphoneButtonComponent', MicrophoneButtonComponent)
   .component('feedbackFormComponent', FeedbackFormComponent)
   .component('transcriptComponent', TranscriptComponent)
+  .component('customDictionaryFormComponent', CustomDictionaryFormComponent)
   .constant('AppState', AppState)
   .constant('TranscriptComponentEvent', TranscriptComponentEvent)
   .controller('AppController', AppController)

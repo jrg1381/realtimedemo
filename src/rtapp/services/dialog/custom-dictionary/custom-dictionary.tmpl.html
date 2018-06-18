@@ -15,9 +15,9 @@
       </div>
     </md-toolbar>
     <md-dialog-content>
-      <custom-dictionary-component ng-if="!$ctrl.submitted"
+      <custom-dictionary-form-component ng-if="!$ctrl.submitted"
         ng-model="$ctrl.formModel"
-        ng-disabled="$ctrl.submitting"></custom-dictionary-component>
+        ng-disabled="$ctrl.submitting"></custom-dictionary-form-component>
     </md-dialog-content>
     <md-dialog-actions layout="row">
       <md-button aria-label="Submit"
