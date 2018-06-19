@@ -2,10 +2,10 @@
     layout="column"
     layout-padding>
     <p ng-bind="$ctrl.strings.blurb"></p>
-    <div layout="column"
-        md-whiteframe="1"
-        layout-margin
-        layout-align="center center">
-        <p>column1</p>
+    <div class="form-group">
+        <textarea class="form-control"
+        id="custom-dictionary-data"
+        rows="8" ng-model="$ctrl.ngModel"></textarea>
+    </div>
     </div>
 </div>
