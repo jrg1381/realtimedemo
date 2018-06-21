@@ -20,6 +20,7 @@ export default class ConfigLoaderService {
       if(this.config) {
         this.config.api = storedConfig.api
         this.config.app = storedConfig.app
+        this.config.custom_dictionary = storedConfig.custom_dictionary
       } else {
         this.config = storedConfig
       }
