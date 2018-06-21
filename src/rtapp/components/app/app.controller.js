@@ -276,6 +276,7 @@ export default class AppController {
           this.AudioCaptureService.getSampleRate()
         )
           .then(data => {
+            this.RealtimeAPIService.sendConfiguration(this.config.custom_dictionary)
             this.applyState(this.AppState.GETTING_USER_MEDIA)
             this.AudioCaptureService.startCapture(this.config.app.listen).then(
               () => {

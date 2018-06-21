@@ -69,6 +69,9 @@ export default class RealtimeAPIService {
       case this.RealtimeAPIMessageType.END_OF_TRANSCRIPT:
         this.socket.close()
         break
+      case this.RealtimeAPIMessageType.INFO:
+        console.log(data)
+        break
     }
   }
   _addWebSocketEventListeners (socket) {
@@ -135,6 +138,15 @@ export default class RealtimeAPIService {
       this.startRecognitionResolve = resolve
       this.startRecognitionReject = reject
     })
+  }
+  sendConfiguration (proteusConfiguration) {
+    if (this.socket.readyState !== this.WebSocket.OPEN) return
+    this.socket.send(
+      JSON.stringify({
+        message: 'SetRecognitionConfig',
+        config: {'additional_vocab': proteusConfiguration}
+      })
+    )
   }
   sendAudioBuffer (pcmData, sampleRate) {
     if (this.socket.readyState !== this.WebSocket.OPEN) return

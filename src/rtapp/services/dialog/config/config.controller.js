@@ -35,6 +35,7 @@ export default class ConfigDialogController {
       $mdDialog.hide($scope.config)
       $scope.liveConfig.api = $scope.config.api
       $scope.liveConfig.app = $scope.config.app
+      $scope.liveConfig.custom_dictionary = $scope.config.custom_dictionary
     }
     $scope.cancel = function () {
       $mdDialog.cancel()

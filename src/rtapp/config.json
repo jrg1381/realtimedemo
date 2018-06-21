@@ -8,5 +8,12 @@
     "host": "api.rt.speechmatics.io:9000",
     "user_id": 1,
     "auth_token": "rt_test"
-  }
+  },
+  "custom_dictionary": [
+    "speechmagic",
+    {
+      "content": "gnocchi",
+      "sounds_like": [ "nokey", "nokki"]
+    }
+  ]
 }
