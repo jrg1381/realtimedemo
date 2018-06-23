@@ -1,5 +1,31 @@
 import './custom-dictionary.style.scss'
 
+const JSON_SCHEMA = {
+  "type": "array",
+  "items": {
+    "anyOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "sounds_like": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "content",
+          "sounds_like"
+        ]
+      }
+    ]
+  }
+}
+
 export default class CustomDictionaryController {
   /* @ngInject */
   constructor ($mdDialog, $scope, ConfigLoaderService) {
@@ -14,21 +40,41 @@ export default class CustomDictionaryController {
     })
   }
 
+  validateJson(jsonIn) {
+    var ajv = new Ajv()
+    var validate = ajv.compile(JSON_SCHEMA)
+    let result = validate(jsonIn)
+    if(!result) {
+      console.log(validate.errors)
+    }
+    return result
+  }
+
   submit () {
     this.submitting = true
     try {
       let parsedData = JSON.parse(this.formModel)
+
+      if(!this.validateJson(parsedData)) {
+        return this.failSubmit('Custom dictionary (bad JSON schema)')
+      }
+
+      this.config.custom_dictionary = parsedData
+      this.ConfigLoaderService.save(this.config)
     } catch(e) {
-        this.submitting = false
-        // TODO: until can do proper validation (ng-valid / ng-invalid)
-        this.content.title = 'Custom dictionary (invalid JSON)'
-        return false
+      console.log(e)
+        return this.failSubmit('Custom dictionary (invalid JSON)')
     }
 
-    this.config.custom_dictionary = JSON.parse(this.formModel)
-    this.ConfigLoaderService.save(this.config)
     this.close()
   }
+
+  failSubmit(message) {
+    this.submitting = false
+    this.content.title = message
+    return false
+  }
+
   close () {
     this.$mdDialog.hide()
   }

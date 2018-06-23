@@ -32,7 +32,7 @@ export default class ConfigLoaderService {
   }
 
   _getStoredConfig() {
-    let storedConfig = this.$window.localStorage.getItem('rt-config')
+    let storedConfig = this.$window.localStorage.getItem(ConfigStorage.LOCAL_STORAGE)
     if(storedConfig) {
       return JSON.parse(storedConfig)
     }
@@ -40,7 +40,7 @@ export default class ConfigLoaderService {
   }
 
   _setStoredConfig() {
-    this.$window.localStorage.setItem('rt-config', JSON.stringify(this.config))
+    this.$window.localStorage.setItem(ConfigStorage.LOCAL_STORAGE, JSON.stringify(this.config))
   }
 
   save (config) {
