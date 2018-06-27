@@ -1,30 +1,6 @@
 import './custom-dictionary.style.scss'
+import jsonvalidator from '../../../components/app/app.jsonvalidator'
 
-const JSON_SCHEMA = {
-  "type": "array",
-  "items": {
-    "anyOf": [
-      {
-        "type": "string"
-      },
-      {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "string"
-          },
-          "sounds_like": {
-            "type": "array"
-          }
-        },
-        "required": [
-          "content",
-          "sounds_like"
-        ]
-      }
-    ]
-  }
-}
 
 export default class CustomDictionaryController {
   /* @ngInject */
@@ -34,40 +10,24 @@ export default class CustomDictionaryController {
     this.submitting = false
     this.content = {'title': 'Custom dictionary'}
     this.ConfigLoaderService = ConfigLoaderService
+    this.jsonvalidator = new jsonvalidator()
     ConfigLoaderService.get().then(config => {
       this.formModel = JSON.stringify(config.custom_dictionary, null, "    ")
       this.config = config
-      // It should be impossible to have stored invalid JSON, but...
-      this.validateJson(config.custom_dictionary)
+      this.validjson = this.jsonvalidator.validate(this.formModel)
     })
-
-  }
-
-  validateJson(jsonIn) {
-    var ajv = new Ajv()
-    var validate = ajv.compile(JSON_SCHEMA)
-    this.validjson = validate(jsonIn)
-    if(!this.validjson) {
-      console.log(validate.errors)
-    }
-    return this.validjson
   }
 
   submit () {
     this.submitting = true
-    try {
+
+    if(this.jsonvalidator.validate(this.formModel)) {
       let parsedData = JSON.parse(this.formModel)
-
-      if(!this.validateJson(parsedData)) {
-        return this.failSubmit('Custom dictionary (bad JSON schema)')
-      }
-
       this.config.custom_dictionary = parsedData
       this.ConfigLoaderService.save(this.config)
-    } catch(e) {
-      console.log(e)
+    } else {
       this.validjson = false
-      return this.failSubmit('Custom dictionary (invalid JSON)')
+      return this.failSubmit("Bad json")
     }
 
     this.close()

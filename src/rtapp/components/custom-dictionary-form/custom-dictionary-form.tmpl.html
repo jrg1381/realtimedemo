@@ -5,6 +5,7 @@
     <div class="form-group">
         <textarea class="form-control"
         id="custom-dictionary-data"
+        ng-keyup="$ctrl.change($event)"
         ng-class="{'ng-invalid': !$ctrl.validjson, 'ng-valid': $ctrl.validjson}"
         rows="8" ng-model="$ctrl.ngModel"></textarea>
     </div>
