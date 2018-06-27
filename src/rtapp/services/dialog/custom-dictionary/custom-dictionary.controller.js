@@ -37,17 +37,20 @@ export default class CustomDictionaryController {
     ConfigLoaderService.get().then(config => {
       this.formModel = JSON.stringify(config.custom_dictionary, null, "    ")
       this.config = config
+      // It should be impossible to have stored invalid JSON, but...
+      this.validateJson(config.custom_dictionary)
     })
+
   }
 
   validateJson(jsonIn) {
     var ajv = new Ajv()
     var validate = ajv.compile(JSON_SCHEMA)
-    let result = validate(jsonIn)
-    if(!result) {
+    this.validjson = validate(jsonIn)
+    if(!this.validjson) {
       console.log(validate.errors)
     }
-    return result
+    return this.validjson
   }
 
   submit () {
@@ -63,7 +66,8 @@ export default class CustomDictionaryController {
       this.ConfigLoaderService.save(this.config)
     } catch(e) {
       console.log(e)
-        return this.failSubmit('Custom dictionary (invalid JSON)')
+      this.validjson = false
+      return this.failSubmit('Custom dictionary (invalid JSON)')
     }
 
     this.close()

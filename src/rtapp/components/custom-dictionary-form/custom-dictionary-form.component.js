@@ -7,6 +7,7 @@ export default {
   controller,
   bindings: {
     ngDisabled: '=',
-    ngModel: '='
+    ngModel: '=',
+    validjson: '=',
   }
 }
