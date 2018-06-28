@@ -10,10 +10,15 @@ export default class LanguageService {
     return new Promise((resolve, reject) => {
       resolve([
         {
+          code: 'en',
+          icon: emojione.shortnameToImage(':united_nations:'),
+          name: 'Global English',
+          default: true
+        },
+        {
           code: 'en-US',
           icon: emojione.shortnameToImage(':flag_us:'),
           name: 'American English',
-          default: true
         },
         {
           code: 'en-GB',
