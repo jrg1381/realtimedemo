@@ -26,16 +26,15 @@ const JSON_SCHEMA = {
 
 export default class JsonValidator {
     constructor () {
+        var ajv = new Ajv()
+        this.validator = ajv.compile(JSON_SCHEMA)
     }
 
     validate(jsonIn) {
         try {
             let parsedData = JSON.parse(jsonIn)
-
-            var ajv = new Ajv()
-            var validator = ajv.compile(JSON_SCHEMA)
-            let result = validator(parsedData)
-            console.log(validator.errors)
+            let result = this.validator(parsedData)
+            console.log(this.validator.errors)
             return result
         } catch(e) {
             console.log(e)
