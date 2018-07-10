@@ -12,7 +12,11 @@ const JSON_SCHEMA = {
               "type": "string"
             },
             "sounds_like": {
-              "type": "array"
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
             }
           },
           "required": [
