@@ -1,4 +1,4 @@
-import configFilePath from 'file-loader?name=[name].[ext]?[hash]!./../../config.json'
+const configFilePath = require('../../config.json')
 
 const ConfigStorage = {
   LOCAL_STORAGE:
@@ -56,17 +56,16 @@ export default class ConfigLoaderService {
     return deferred.promise
   }
   _load () {
-    return this.$http
-      .get(`./${configFilePath}`, {
-        cache: true
-      })
-      .then(response => {
-        this.config = response.data
-        this._setStoredConfig()
-        if (this.config.api.host === true) {
-          this.config.api.host = this.$window.location.hostname
+    // Capture 'this'
+    var that = this
+    return new Promise(function(resolve, reject) {
+      that.config = configFilePath
+      that._setStoredConfig()
+        if (that.config.api.host === true) {
+          that.config.api.host = that.$window.location.hostname
         }
-        return this.config
-      })
+        resolve(that.config)
+      }
+    )
   }
 }
