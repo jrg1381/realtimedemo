@@ -10,6 +10,7 @@ import RealtimeAPIErrorType from './realtime-api/error-type.constant'
 import RealtimeAPIEvent from './realtime-api/realtime-api.event'
 import RealtimeAPIMessageType from './realtime-api/message-type.constant'
 import RealtimeAPIService from './realtime-api/realtime-api.service'
+import RealtimeAPIServiceV2 from './realtime-api/realtime-api-v2.service'
 import RealtimeAPIWarningType from './realtime-api/warning-type.constant'
 import StringService from './string/string.service'
 
@@ -27,4 +28,5 @@ export default angular
   .service('DialogService', DialogService)
   .service('LanguageService', LanguageService)
   .service('RealtimeAPIService', RealtimeAPIService)
+  .service('RealtimeAPIServiceV2', RealtimeAPIServiceV2)
   .service('StringService', StringService)

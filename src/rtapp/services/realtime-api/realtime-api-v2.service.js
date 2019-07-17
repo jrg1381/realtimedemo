@@ -1,4 +1,4 @@
-export default class RealtimeAPIService {
+export default class RealtimeAPIServiceV2 {
   /* @ngInject */
   constructor (
     $rootScope,
@@ -41,12 +41,8 @@ export default class RealtimeAPIService {
       case this.RealtimeAPIMessageType.RECOGNITION_STARTED:
         this.startRecognitionResolve(data)
         break
-      case this.RealtimeAPIMessageType.DATA_ADDED:
-        if (data.seq_no === this.seqNoIn) {
-          this.seqNoIn++
-        } else {
-          throw new Error('Unexpected sequence number from API', event)
-        }
+      case this.RealtimeAPIMessageType.AUDIO_ADDED:
+        this.seqNoIn++
         break
       case this.RealtimeAPIMessageType.WARNING:
         this.$rootScope.$broadcast(this.RealtimeAPIEvent.WARNING, data)
@@ -54,13 +50,13 @@ export default class RealtimeAPIService {
       case this.RealtimeAPIMessageType.ADD_PARTIAL_TRANSCRIPT:
         this.$rootScope.$broadcast(
           this.RealtimeAPIEvent.PARTIAL_TRANSCRIPT_RECEIVED,
-          data.transcript
+          data.metadata.transcript
         )
         break
       case this.RealtimeAPIMessageType.ADD_TRANSCRIPT:
         this.$rootScope.$broadcast(
           this.RealtimeAPIEvent.FULL_TRANSCRIPT_RECEIVED,
-          data.transcript
+          data.metadata.transcript
         )
         break
       case this.RealtimeAPIMessageType.ERROR:
@@ -125,13 +121,11 @@ export default class RealtimeAPIService {
           encoding: 'pcm_f32le',
           sample_rate: sampleRate
         },
-        user: this.userId,
-        auth_token: this.authToken,
         message: 'StartRecognition',
-        model: languageCode,
-        output_format: {
-          type: 'json'
-        }
+        transcription_config: {
+          language: languageCode,
+          additional_vocab: proteusConfiguration
+        },
       })
     )
     return new Promise((resolve, reject) => {
@@ -140,24 +134,10 @@ export default class RealtimeAPIService {
     })
   }
   sendConfiguration (proteusConfiguration) {
-    if (this.socket.readyState !== this.WebSocket.OPEN) return
-    this.socket.send(
-      JSON.stringify({
-        message: 'SetRecognitionConfig',
-        config: {'additional_vocab': proteusConfiguration}
-      })
-    )
+    // No-op in v2
   }
   sendAudioBuffer (pcmData, sampleRate) {
     if (this.socket.readyState !== this.WebSocket.OPEN) return
-    this.socket.send(
-      JSON.stringify({
-        message: this.RealtimeAPIMessageType.ADD_DATA,
-        offset: 0,
-        seq_no: this.seqNoOut,
-        size: pcmData.byteLength
-      })
-    )
     this.seqNoOut++
     this.socket.send(pcmData.buffer)
   }

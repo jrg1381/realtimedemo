@@ -9,7 +9,8 @@ const MessageType = {
   RECOGNITION_STARTED: 'RecognitionStarted',
   START_RECOGNITION: 'StartRecognition',
   WARNING: 'Warning',
-  INFO: 'Info'
+  INFO: 'Info',
+  AUDIO_ADDED: 'AudioAdded'
 }
 
 export default MessageType

@@ -39,6 +39,7 @@ export default class AppController {
     RealtimeAPIErrorType,
     RealtimeAPIEvent,
     RealtimeAPIService,
+    RealtimeAPIServiceV2,
     RealtimeAPIWarningType,
     StringService,
     TranscriptComponentEvent
@@ -56,7 +57,8 @@ export default class AppController {
     this.LanguageService = LanguageService
     this.RealtimeAPIErrorType = RealtimeAPIErrorType
     this.RealtimeAPIEvent = RealtimeAPIEvent
-    this.RealtimeAPIService = RealtimeAPIService
+    this.RealtimeAPIServiceV1 = RealtimeAPIService
+    this.RealtimeAPIServiceV2 = RealtimeAPIServiceV2
     this.RealtimeAPIWarningType = RealtimeAPIWarningType
     this.StringService = StringService
     this.TranscriptComponentEvent = TranscriptComponentEvent
@@ -113,6 +115,11 @@ export default class AppController {
       this.config = config
       if (this.config.app.debug) {
         this.DebugTriggerService.enable()
+      }
+      if (this.config.api.host.endsWith("v2")) {
+        this.RealtimeAPIService = this.RealtimeAPIServiceV2
+      } else {
+        this.RealtimeAPIService = this.RealtimeAPIServiceV1
       }
     })
     this.strings = this.StringService.get()
@@ -263,6 +270,12 @@ export default class AppController {
     })
   }
   startTranscribing () {
+    if (this.config.api.host.endsWith("v2")) {
+      this.RealtimeAPIService = this.RealtimeAPIServiceV2
+    } else {
+      this.RealtimeAPIService = this.RealtimeAPIServiceV1
+    }
+
     this.updateState(this.AppState.CONNECTING)
     this.RealtimeAPIService.connect(
       `wss://${this.config.api.host}`,
@@ -273,7 +286,8 @@ export default class AppController {
         this.applyState(this.AppState.CONNECTED)
         this.RealtimeAPIService.startRecognition(
           this.params.language,
-          this.AudioCaptureService.getSampleRate()
+          this.AudioCaptureService.getSampleRate(),
+          this.config.custom_dictionary
         )
           .then(data => {
             this.RealtimeAPIService.sendConfiguration(this.config.custom_dictionary)
