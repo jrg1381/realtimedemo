@@ -40,6 +40,7 @@
   },
   "components": {
     "app": {
+      "customDictionary": "Custom dictionary",
       "title": "Real-time transcription demo",
       "improveAccuracy": "Improve Accuracy",
       "leaveFeedback": "Leave Feedback",
@@ -57,6 +58,9 @@
         "accuracy": "Improve Accuracy Button Clicked"
       },
       "languageSelectLabel": "Select the language you will be transcribing"
+    },
+    "customDictionaryForm": {
+      "blurb": "Define the custom dictionary entries for this transcription session." 
     },
     "feedbackForm": {
       "rating": {

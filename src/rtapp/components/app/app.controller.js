@@ -39,6 +39,7 @@ export default class AppController {
     RealtimeAPIErrorType,
     RealtimeAPIEvent,
     RealtimeAPIService,
+    RealtimeAPIServiceV2,
     RealtimeAPIWarningType,
     StringService,
     TranscriptComponentEvent
@@ -56,7 +57,8 @@ export default class AppController {
     this.LanguageService = LanguageService
     this.RealtimeAPIErrorType = RealtimeAPIErrorType
     this.RealtimeAPIEvent = RealtimeAPIEvent
-    this.RealtimeAPIService = RealtimeAPIService
+    this.RealtimeAPIServiceV1 = RealtimeAPIService
+    this.RealtimeAPIServiceV2 = RealtimeAPIServiceV2
     this.RealtimeAPIWarningType = RealtimeAPIWarningType
     this.StringService = StringService
     this.TranscriptComponentEvent = TranscriptComponentEvent
@@ -114,6 +116,11 @@ export default class AppController {
       if (this.config.app.debug) {
         this.DebugTriggerService.enable()
       }
+      if (this.config.api.host.endsWith("v2")) {
+        this.RealtimeAPIService = this.RealtimeAPIServiceV2
+      } else {
+        this.RealtimeAPIService = this.RealtimeAPIServiceV1
+      }
     })
     this.strings = this.StringService.get()
     this.addEventListeners()
@@ -147,12 +154,15 @@ export default class AppController {
   onFeedbackClicked ($event) {
     this.showFeedbackQuestionnaire(this.transcripts)
   }
-  showAccuracyDiscalimer () {
+  showAccuracyDisclaimer () {
     this.stopTranscribing()
-    this.DialogService.showAccuracyDiscalimer()
+    this.DialogService.showAccuracyDisclaimer()
   }
   onAccuracyClicked ($event) {
-    this.showAccuracyDiscalimer()
+    this.showAccuracyDisclaimer()
+  }
+  onCustomDictionaryClicked ($event) {
+    this.DialogService.showCustomDictionaryConfiguration()
   }
   handleIncomingAudioBuffer (event, data) {
     this.RealtimeAPIService.sendAudioBuffer(data.pcmData, data.sampleRate)
@@ -260,6 +270,12 @@ export default class AppController {
     })
   }
   startTranscribing () {
+    if (this.config.api.host.endsWith("v2")) {
+      this.RealtimeAPIService = this.RealtimeAPIServiceV2
+    } else {
+      this.RealtimeAPIService = this.RealtimeAPIServiceV1
+    }
+
     this.updateState(this.AppState.CONNECTING)
     this.RealtimeAPIService.connect(
       `wss://${this.config.api.host}`,
@@ -270,9 +286,11 @@ export default class AppController {
         this.applyState(this.AppState.CONNECTED)
         this.RealtimeAPIService.startRecognition(
           this.params.language,
-          this.AudioCaptureService.getSampleRate()
+          this.AudioCaptureService.getSampleRate(),
+          this.config.custom_dictionary
         )
           .then(data => {
+            this.RealtimeAPIService.sendConfiguration(this.config.custom_dictionary)
             this.applyState(this.AppState.GETTING_USER_MEDIA)
             this.AudioCaptureService.startCapture(this.config.app.listen).then(
               () => {

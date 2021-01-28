@@ -7,7 +7,8 @@ import ConnectionErrorDialogTemplate from './connection-error/connection-error.t
 import RequirementsErrorDialogTemplate from './requirements-error/requirements-error.tmpl.html'
 import FeedbackDialogTemplate from './feedback/feedback.tmpl.html'
 import FeedbackDialogController from './feedback/feedback.controller'
-
+import CustomDictionaryTemplate from './custom-dictionary/custom-dictionary.tmpl.html'
+import CustomDictionaryController from './custom-dictionary/custom-dictionary.controller'
 import './requirements-error/requirements-error.style.scss'
 
 export default class DialogService {
@@ -117,7 +118,7 @@ export default class DialogService {
       )
       .catch(this.handleError.bind(this))
   }
-  showAccuracyDiscalimer () {
+  showAccuracyDisclaimer () {
     this.$analytics.eventTrack('Dialog', {
       label: this.StringService.get().dialog.accuracy.analytics.label
     })
@@ -134,6 +135,22 @@ export default class DialogService {
           .ok('Got it!')
       )
       .catch(this.handleError.bind(this))
+  }
+  showCustomDictionaryConfiguration() {
+    return this.$mdDialog
+      .show({
+        multiple: this.multiple,
+        template: CustomDictionaryTemplate,
+        parent: angular.element(document.body),
+        clickOutsideToClose: false,
+        controller: CustomDictionaryController,
+        resolve: {
+          customdictionary: () => {
+            return {'foo':'bar'}
+          }
+        }
+      })
+      .catch(this.handleError.bind(this))    
   }
   showFeedbackQuestionnaire (transcripts) {
     this.$analytics.eventTrack('Dialog', {
@@ -175,8 +192,8 @@ export default class DialogService {
           }
         })
         .then(config => {
-          this.ConfigLoaderService.save(config)
-        })
+            this.ConfigLoaderService.save(config)
+          })
         .catch(this.handleError.bind(this))
     })
   }

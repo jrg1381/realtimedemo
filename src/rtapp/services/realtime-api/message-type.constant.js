@@ -8,7 +8,9 @@ const MessageType = {
   ERROR: 'Error',
   RECOGNITION_STARTED: 'RecognitionStarted',
   START_RECOGNITION: 'StartRecognition',
-  WARNING: 'Warning'
+  WARNING: 'Warning',
+  INFO: 'Info',
+  AUDIO_ADDED: 'AudioAdded'
 }
 
 export default MessageType

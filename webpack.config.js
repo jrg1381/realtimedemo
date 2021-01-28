@@ -102,11 +102,14 @@ switch (process.env.NODE_ENV) {
     // Generates source maps.
     module.exports.devtool = 'source-map'
     // Required for webpack-dev-server inline mode.
-    module.exports.entry.inline = `webpack-dev-server/client?http://${host}:${port}/`
+    module.exports.entry.inline = `webpack-dev-server/client?https://${host}/`
     // Options for webpack-dev-server.
     module.exports.devServer = {
       host: host,
+      key: fs.readFileSync('./api.speechmatics.io.key'),
+      cert: fs.readFileSync('./api.speechmatics.io.crt'),
       port: port,
+      disableHostCheck: true,
       inline: true,
       https: true,
       stats: {

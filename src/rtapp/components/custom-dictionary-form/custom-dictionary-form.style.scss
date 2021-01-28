@@ -1,0 +1,13 @@
+.custom-dictionary-form-component {
+  max-width: 960px;
+}
+
+.form-control { width: 95%; }
+
+textarea.ng-invalid {
+  border-left: 5px solid #a94442; /* red */
+}
+
+textarea.ng-valid {
+  border-left: 5px solid #046e04; /* green */
+}
